@@ -3,12 +3,69 @@
  */
 package simpleWeb;
 
+
+
 import org.junit.jupiter.api.Test;
+
+import java.util.ArrayList;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 class AppTest {
-    @Test void appHasAGreeting() {
-        App classUnderTest = new App();
-        assertNotNull(classUnderTest.getGreeting(), "app should have a greeting");
+
+    App app = new App();
+
+    @Test
+    void testEmptyArray() {//gönderilen dizi boş ise false dön
+        ArrayList<Product> products = new ArrayList<>();
+        assertFalse(app.cancelProduct(products, 2, "saat", true));
+    }
+
+    @Test
+    void testProductFound() { // Ürün listede varsa true dön
+        ArrayList<Product> products = productList();
+        assertTrue(app.cancelProduct(products, 4, "saat", true));
+    }
+
+    @Test
+    void testProductNotFound() {  // Ürün listede yoksa false dön
+        ArrayList<Product> products = productList();
+        assertFalse(app.cancelProduct(products, 4, "table", true));
+    }
+
+    @Test
+    void testProductCancellationConfirmed() { //Ürün silmesine onay verilmisse true dön
+        ArrayList<Product> products = productList();
+        assertTrue(app.cancelProduct(products, 4, "saat", true));
+    }
+
+    @Test
+    void testProductCancellationNotConfirmed() { //Ürün silmesine onay verilmemisse false dön
+        ArrayList<Product> products = productList();
+        assertFalse(app.cancelProduct(products, 1, "telefon", false));
+    }
+
+    @Test
+    void testProductCountValid() {  //ürün listesinden silinen ürünün girilen miktardan çok veya eşit ise true dön
+        ArrayList<Product> products = productList();
+        assertTrue(app.cancelProduct(products, 1, "telefon", true));
+    }
+
+    @Test
+    void testProductCountNotValid() { //ürün listesinden silinen ürünün girilen miktardan az ise false dön
+        ArrayList<Product> products = productList();
+        assertFalse(app.cancelProduct(products, 4, "telefon", true));
+    }
+
+
+    public ArrayList<Product> productList() {
+        Product product1 = new Product("saat", 5);
+        Product product2 = new Product("telefon", 3);
+        Product product3 = new Product("bilgisayar", 1);
+        ArrayList<Product> products = new ArrayList<>();
+        products.add(product1);
+        products.add(product2);
+        products.add(product3);
+        return products;
     }
 }
