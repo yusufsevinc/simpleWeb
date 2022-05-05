@@ -22,7 +22,8 @@ public class App {
         
         logger.error("The project is working");
         ArrayList<Product> products = new ArrayList<>();
-
+        int port = Integer.parseInt(System.getenv("PORT"));
+        port(port);
         get("/",
                 (request,response) -> {
 
